@@ -4,6 +4,9 @@
 
 # regular libraries
 library(tidyverse)
+library(sf)
+library(plotly)
+library(ggplotly)
 
 # WEBSITE: https://github.com/R-ArcGIS/r-bridge
 # install.packages("arcgisbinding", repos="https://r.esri.com", type="win.binary")
@@ -32,15 +35,34 @@ lat <- "Lat"
 long <- "Long"
 categorical <- "DAY_OF_WEE"
 
-selected_fields <- c(lat, long, categorical)
+selected_fields <- c("FID", "OCCURRED_O", lat, long, categorical)
+  # make sure to select the filed you want to filter by  
 
 # filtering based on time 
 c(min(dat$OCCURRED_O), max(dat$OCCURRED_O))
 
-filter <- "OCCURRED_O >= 'timestamp 2019-01-01 00:00:00'"
+filter <- "OCCURRED_O >= timestamp '2019-01-01 00:00:00'"
+  # note the single quotes around the actual timestamp numbers 
 
-# new clasue for the data
+# new clause for the data
 dat_filter <- arc.select(gis_data, fields = selected_fields, where_clause = filter)
+head(dat_filter)
+
+####### VISUALIZING THE DATA ###### 
+dat_sf <- arc.data2sf(dat_filter)
+  # converts the data to a simple feature (sf) object 
+
+ggplot(dat_sf) +
+  geom_sf(color = "blue")
+
+# spatial thin the data (which means?)
+# this part is unnec for this eg, because spatial thinning is for ecology
+
+ggplot(dat_filter) +
+  geom_bar(aes(x = DAY_OF_WEE))
+# looking at the days fo the week for the data 
+
+# look at possibility of making interactive mapping thing using GIS to integrate?
 
 
 ####### REFERENCES ###### 
