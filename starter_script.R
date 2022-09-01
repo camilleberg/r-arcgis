@@ -6,7 +6,7 @@
 library(tidyverse)
 library(sf)
 library(plotly)
-library(ggplotly)
+# library(ggplotly)
 
 # WEBSITE: https://github.com/R-ArcGIS/r-bridge
 # install.packages("arcgisbinding", repos="https://r.esri.com", type="win.binary")
